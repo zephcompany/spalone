@@ -9,19 +9,6 @@ function quickSafeUrl(value = '') {
   }
 }
 
-function quickOpenLabel(record) {
-  const text = `${record.category || ''} ${record.service || ''}`.toLowerCase();
-  if (text.includes('instagram')) return 'Abrir Instagram';
-  if (text.includes('hostinger') || text.includes('hospedagem')) return 'Abrir Hostinger';
-  if (text.includes('shopify') || text.includes('e-commerce')) return 'Abrir Shopify';
-  if (text.includes('webflow')) return 'Abrir Webflow';
-  if (text.includes('godaddy')) return 'Abrir GoDaddy';
-  if (text.includes('tasjeel')) return 'Abrir Tasjeel';
-  if (text.includes('e-mail') || text.includes('email')) return 'Abrir e-mail';
-  if (text.includes('site') || text.includes('domínio') || text.includes('dominio')) return 'Abrir site';
-  return 'Abrir acesso';
-}
-
 function quickCopyIcon(recordId, field, label) {
   return `
     <button class="field-copy" data-quick-action="copy-field" data-id="${esc(recordId)}" data-field="${esc(field)}" type="button" aria-label="Copiar ${esc(label)}" title="Copiar ${esc(label)}">
@@ -81,6 +68,100 @@ function syncQuickCategoryFilter() {
   });
 }
 
+function installRefinedLayout() {
+  if (document.getElementById('spalone-refined-layout-v9')) return;
+
+  const style = document.createElement('style');
+  style.id = 'spalone-refined-layout-v9';
+  style.textContent = `
+    @media (min-width: 901px) {
+      .overview > div:first-child {
+        max-width: none !important;
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+      }
+
+      .overview h1 {
+        white-space: nowrap !important;
+        font-size: clamp(28px, 3vw, 43px) !important;
+        line-height: 1.04 !important;
+      }
+    }
+
+    .card-top {
+      width: 100% !important;
+      max-width: none !important;
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) auto !important;
+      align-items: start !important;
+      justify-content: initial !important;
+      gap: 14px !important;
+      margin: 0 0 15px !important;
+      padding: 0 !important;
+      text-align: left !important;
+    }
+
+    .card-top > div:first-child {
+      width: 100% !important;
+      max-width: none !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      text-align: left !important;
+      justify-self: stretch !important;
+    }
+
+    .card-category,
+    .card-top h3,
+    .card-top p {
+      width: auto !important;
+      max-width: none !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      text-align: left !important;
+    }
+
+    .card-edit {
+      align-self: start !important;
+      justify-self: end !important;
+      margin: 0 !important;
+      padding: 8px 12px !important;
+      min-height: 32px !important;
+      line-height: 1 !important;
+    }
+
+    .card-actions {
+      display: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+    }
+
+    .count-pill {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-height: 30px !important;
+      height: 30px !important;
+      padding: 0 11px !important;
+      margin: 0 !important;
+      line-height: 1 !important;
+      box-sizing: border-box !important;
+      white-space: nowrap !important;
+    }
+
+    @media (max-width: 900px) {
+      .overview h1 {
+        white-space: normal !important;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+}
+
 renderList = function renderListQuick() {
   const records = filteredRecords();
   els.resultCount.textContent = `${records.length} ${records.length === 1 ? 'acesso' : 'acessos'}`;
@@ -118,16 +199,13 @@ renderList = function renderListQuick() {
         </div>
 
         ${r.notes ? `<div class="quick-notes">${esc(r.notes)}</div>` : ''}
-
-        ${url ? `
-          <div class="card-actions">
-            <button class="quick-btn primary" data-quick-action="open" data-url="${esc(url)}" type="button">${esc(quickOpenLabel(r))} ↗</button>
-          </div>` : ''}
       </article>`;
   }).join('');
 };
 
+installRefinedLayout();
 setupQuickCategoryFilters();
+
 const quickPanelTitle = document.querySelector('.panel-head h3');
 if (quickPanelTitle) quickPanelTitle.textContent = 'Clique no card para abrir ou copie os dados pelo ícone';
 
@@ -141,13 +219,6 @@ els.recordsList.addEventListener('click', async (event) => {
 
   if (actionButton) {
     const action = actionButton.dataset.quickAction;
-
-    if (action === 'open') {
-      const url = quickSafeUrl(actionButton.dataset.url);
-      if (url) window.open(url, '_blank', 'noopener,noreferrer');
-      return;
-    }
-
     const record = state.records.find(item => item.id === actionButton.dataset.id);
     if (!record) return;
 
