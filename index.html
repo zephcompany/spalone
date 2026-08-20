@@ -8,8 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=7" />
-  <link rel="stylesheet" href="quick.css?v=7" />
+  <link rel="stylesheet" href="style.css?v=8" />
+  <link rel="stylesheet" href="quick.css?v=8" />
+  <link rel="stylesheet" href="premium.css?v=8" />
 </head>
 <body>
   <div id="lockScreen" class="lock-screen">
@@ -47,7 +48,7 @@
         </div>
       </div>
       <div class="top-actions">
-        <button id="exportBtn" class="btn secondary">Backup</button>
+        <button id="exportBtn" class="btn secondary hidden" aria-hidden="true" tabindex="-1">Backup</button>
         <label class="btn secondary file-label">Importar<input id="importInput" type="file" accept="application/json,.json" /></label>
         <button id="lockBtn" class="btn secondary">Bloquear</button>
         <button id="newBtn" class="btn primary">+ Novo acesso</button>
@@ -98,7 +99,7 @@
           <div class="panel-head">
             <div>
               <p class="eyebrow">ACESSOS CADASTRADOS</p>
-              <h3>Clique no card ou use os botões rápidos</h3>
+              <h3>Clique no card para abrir ou copie os dados pelo ícone</h3>
             </div>
             <span id="resultCount" class="count-pill">0 acessos</span>
           </div>
@@ -190,7 +191,7 @@
 
   <div id="toast" class="toast hidden"></div>
 
-  <script src="app.js?v=7"></script>
-  <script src="quick-view.js?v=7"></script>
+  <script src="app.js?v=8"></script>
+  <script src="quick-view.js?v=8"></script>
 </body>
 </html>
