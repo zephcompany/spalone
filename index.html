@@ -7,32 +7,33 @@
   <title>SPALONE X ZEPH</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=4" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=7" />
+  <link rel="stylesheet" href="quick.css?v=7" />
 </head>
 <body>
   <div id="lockScreen" class="lock-screen">
     <div class="lock-card">
       <div class="brand-mark">SZ</div>
-      <p class="eyebrow">PRIVATE ACCESS VAULT</p>
+      <p class="eyebrow">PRIVATE ACCESS</p>
       <h1>SPALONE <span>X</span> ZEPH</h1>
-      <p id="lockDescription" class="muted">Crie uma senha mestre para proteger os acessos neste navegador.</p>
+      <p id="lockDescription" class="muted">Digite a senha mestre para abrir todos os acessos.</p>
       <form id="unlockForm" autocomplete="off">
         <label class="field">
-          <span id="masterLabel">Nova senha mestre</span>
+          <span id="masterLabel">Senha mestre</span>
           <div class="password-wrap">
-            <input id="masterPassword" type="password" minlength="6" placeholder="••••••••••••" required />
+            <input id="masterPassword" type="password" minlength="6" placeholder="Digite a senha mestre" required />
             <button type="button" class="icon-btn ghost" data-toggle-input="masterPassword" aria-label="Mostrar senha">👁</button>
           </div>
         </label>
         <label id="confirmWrap" class="field">
           <span>Confirmar senha</span>
-          <input id="confirmPassword" type="password" minlength="6" placeholder="••••••••••••" required />
+          <input id="confirmPassword" type="password" minlength="6" placeholder="Repita a senha" required />
         </label>
-        <button id="unlockButton" class="btn primary full" type="submit">Criar cofre</button>
+        <button id="unlockButton" class="btn primary full" type="submit">Desbloquear acessos</button>
         <p id="lockError" class="error-text"></p>
       </form>
-      <p class="security-note">Os dados ficam criptografados no armazenamento local deste navegador. A senha mestre não é salva.</p>
+      <p class="security-note">Depois de desbloquear, logins e senhas ficam visíveis para acesso rápido. O arquivo publicado continua criptografado.</p>
     </div>
   </div>
 
@@ -41,23 +42,23 @@
       <div class="brand">
         <div class="brand-mark small">SZ</div>
         <div>
-          <p class="eyebrow">PRIVATE ACCESS</p>
+          <p class="eyebrow">ACESSOS</p>
           <h2>SPALONE <span>X</span> ZEPH</h2>
         </div>
       </div>
       <div class="top-actions">
-        <button id="exportBtn" class="btn secondary">Exportar</button>
+        <button id="exportBtn" class="btn secondary">Backup</button>
         <label class="btn secondary file-label">Importar<input id="importInput" type="file" accept="application/json,.json" /></label>
         <button id="lockBtn" class="btn secondary">Bloquear</button>
-        <button id="newBtn" class="btn primary">+ Novo login</button>
+        <button id="newBtn" class="btn primary">+ Novo acesso</button>
       </div>
     </header>
 
     <main class="workspace">
       <section class="overview">
         <div>
-          <p class="eyebrow">VISÃO GERAL</p>
-          <h1>Acessos do cliente.</h1>
+          <p class="eyebrow">PAINEL RÁPIDO</p>
+          <h1>Todos os acessos em um lugar.</h1>
         </div>
         <div class="stats">
           <div class="stat"><span>Total</span><strong id="statTotal">0</strong></div>
@@ -70,7 +71,7 @@
       <section class="toolbar">
         <div class="search-wrap">
           <span>⌕</span>
-          <input id="searchInput" type="search" placeholder="Buscar por serviço, login, cliente, site..." />
+          <input id="searchInput" type="search" placeholder="Buscar Instagram, site, e-mail, Hostinger..." />
         </div>
         <select id="categoryFilter" aria-label="Filtrar categoria">
           <option value="all">Todas as categorias</option>
@@ -96,26 +97,22 @@
         <div class="vault-panel">
           <div class="panel-head">
             <div>
-              <p class="eyebrow">COFRE</p>
-              <h3>Acessos cadastrados</h3>
+              <p class="eyebrow">ACESSOS CADASTRADOS</p>
+              <h3>Clique no card ou use os botões rápidos</h3>
             </div>
-            <span id="resultCount" class="count-pill">0 itens</span>
+            <span id="resultCount" class="count-pill">0 acessos</span>
           </div>
           <div id="recordsList" class="records-list"></div>
           <div id="emptyState" class="empty-state hidden">
             <div class="empty-icon">+</div>
             <h3>Nenhum acesso encontrado</h3>
-            <p>Crie o primeiro login ou ajuste os filtros.</p>
+            <p>Crie um acesso novo ou ajuste os filtros.</p>
             <button id="emptyNewBtn" class="btn primary">Criar acesso</button>
           </div>
         </div>
 
-        <aside class="details-panel">
-          <div id="detailsEmpty" class="details-empty">
-            <div class="details-logo">SZ</div>
-            <h3>Selecione um acesso</h3>
-            <p>Os detalhes aparecem aqui, sem sair da tela.</p>
-          </div>
+        <aside class="details-panel hidden" aria-hidden="true">
+          <div id="detailsEmpty" class="details-empty"></div>
           <div id="detailsContent" class="hidden"></div>
         </aside>
       </section>
@@ -127,7 +124,7 @@
       <div class="editor-head">
         <div>
           <p class="eyebrow">GERENCIAR ACESSO</p>
-          <h2 id="editorTitle">Novo login</h2>
+          <h2 id="editorTitle">Novo acesso</h2>
         </div>
         <button id="closeEditorBtn" class="icon-btn" aria-label="Fechar">×</button>
       </div>
@@ -135,7 +132,7 @@
       <form id="recordForm" class="record-form" autocomplete="off">
         <input id="recordId" type="hidden" />
         <div class="form-grid two">
-          <label class="field"><span>Nome do acesso *</span><input id="service" required placeholder="Ex: Hostinger principal" /></label>
+          <label class="field"><span>Nome do acesso *</span><input id="service" required placeholder="Ex: Instagram Prime Pay" /></label>
           <label class="field"><span>Categoria *</span>
             <select id="category" required>
               <option value="">Selecione</option>
@@ -146,7 +143,7 @@
 
         <div class="form-grid two">
           <label class="field"><span>Cliente / projeto</span><input id="client" placeholder="Ex: Spalone" /></label>
-          <label class="field"><span>URL / site</span><input id="url" type="url" placeholder="https://..." /></label>
+          <label class="field"><span>Link para abrir</span><input id="url" type="url" placeholder="https://..." /></label>
         </div>
 
         <div class="form-grid two">
@@ -155,18 +152,13 @@
         </div>
 
         <div class="form-grid two">
-          <label class="field"><span>Senha</span>
-            <div class="password-wrap">
-              <input id="password" type="password" placeholder="Senha do acesso" />
-              <button type="button" class="icon-btn ghost" data-toggle-input="password" aria-label="Mostrar senha">👁</button>
-            </div>
-          </label>
+          <label class="field"><span>Senha</span><input id="password" type="text" placeholder="Senha do acesso" /></label>
           <label class="field"><span>Telefone</span><input id="phone" type="tel" placeholder="(00) 00000-0000" /></label>
         </div>
 
         <div class="form-grid two">
           <label class="field"><span>E-mail de recuperação</span><input id="recoveryEmail" type="email" placeholder="recuperacao@dominio.com" /></label>
-          <label class="field"><span>2FA / backup</span><input id="twoFactor" placeholder="Ex: app autenticador / códigos guardados" /></label>
+          <label class="field"><span>2FA / backup</span><input id="twoFactor" placeholder="App autenticador ou instruções" /></label>
         </div>
 
         <details class="optional-card">
@@ -180,11 +172,11 @@
               <label class="field"><span>Validade</span><input id="cardExpiry" placeholder="MM/AA" /></label>
               <label class="field"><span>Apelido / finalidade</span><input id="cardPurpose" placeholder="Ex: anúncios / hospedagem" /></label>
             </div>
-            <p class="hint">Por segurança, este sistema não possui campo de CVV.</p>
+            <p class="hint">O sistema não possui campo de CVV.</p>
           </div>
         </details>
 
-        <label class="field"><span>Observações</span><textarea id="notes" rows="4" placeholder="Informações extras, instruções, acessos vinculados..."></textarea></label>
+        <label class="field"><span>Observações</span><textarea id="notes" rows="4" placeholder="Endereço, instruções e outras informações importantes..."></textarea></label>
 
         <div class="editor-actions">
           <button id="deleteBtn" type="button" class="btn danger hidden">Excluir</button>
@@ -198,6 +190,7 @@
 
   <div id="toast" class="toast hidden"></div>
 
-  <script src="app.js?v=4"></script>
+  <script src="app.js?v=7"></script>
+  <script src="quick-view.js?v=7"></script>
 </body>
 </html>
