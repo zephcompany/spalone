@@ -2,6 +2,7 @@ const STORAGE_KEY = 'spalone_x_zeph_vault_v1';
 const SALT_KEY = 'spalone_x_zeph_salt_v1';
 const VERIFIER_KEY = 'spalone_x_zeph_verifier_v1';
 const AUTO_LOCK_MS = 15 * 60 * 1000;
+const INITIAL_VAULT_URL = 'initial-vault.json?v=1';
 
 const state = {
   records: [],
@@ -69,6 +70,23 @@ async function decryptObject(payload, key) {
 async function makeVerifier(key) { return encryptObject({ ok: 'SPALONE_X_ZEPH' }, key); }
 
 function isFirstRun() { return !localStorage.getItem(SALT_KEY) || !localStorage.getItem(VERIFIER_KEY); }
+
+async function bootstrapInitialVault() {
+  const forceBase = new URLSearchParams(window.location.search).get('base') === '1';
+  if (!isFirstRun() && !forceBase) return;
+  try {
+    const response = await fetch(INITIAL_VAULT_URL, { cache: 'no-store' });
+    if (!response.ok) return;
+    const payload = await response.json();
+    if (payload.app !== 'SPALONE X ZEPH' || !payload.salt || !payload.verifier || !payload.vault) return;
+    localStorage.setItem(SALT_KEY, payload.salt);
+    localStorage.setItem(VERIFIER_KEY, JSON.stringify(payload.verifier));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload.vault));
+    if (forceBase) history.replaceState({}, '', window.location.pathname + window.location.hash);
+  } catch (_) {
+    // Se não houver cofre inicial, o sistema segue normalmente e cria um novo.
+  }
+}
 
 function configureLockScreen() {
   const first = isFirstRun();
@@ -189,7 +207,7 @@ function render() {
 
 function renderStats() {
   els.statTotal.textContent = state.records.length;
-  els.statSites.textContent = state.records.filter(r => ['Site','Hospedagem','Domínio'].includes(r.category)).length;
+  els.statSites.textContent = state.records.filter(r => ['Site','Hospedagem','Domínio','E-commerce'].includes(r.category)).length;
   els.statEmails.textContent = state.records.filter(r => r.category === 'E-mail').length;
   els.statSocial.textContent = state.records.filter(r => ['Instagram','WhatsApp'].includes(r.category)).length;
 }
@@ -422,4 +440,4 @@ document.addEventListener('keydown', e => {
   }
 });
 
-configureLockScreen();
+bootstrapInitialVault().finally(configureLockScreen);
