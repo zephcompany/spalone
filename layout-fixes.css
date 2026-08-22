@@ -1,0 +1,87 @@
+/* SPALONE X ZEPH - layout consistency fixes */
+.record-row.access-card,
+.record-row.access-card > *,
+.social-platform,
+.social-platform > *,
+.social-fields,
+.quick-fields,
+.quick-notes {
+  box-sizing: border-box;
+}
+
+.record-row.access-card {
+  align-items: stretch !important;
+}
+
+.record-row.access-card > .card-top,
+.record-row.access-card > .quick-fields,
+.record-row.access-card > .social-platform,
+.record-row.access-card > .quick-notes {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  align-self: stretch !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.social-platform {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.social-platform-title {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  text-align: left !important;
+}
+
+.social-fields,
+.social-platform .quick-fields {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.social-fields .quick-field,
+.record-row.access-card > .quick-fields .quick-field {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.quick-notes {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 10px 0 0 !important;
+  padding: 12px 14px !important;
+  text-align: left !important;
+}
+
+/* prevent older generic child rules from constraining content */
+.record-row.access-card > div,
+.record-row.access-card > section {
+  max-width: none !important;
+}
+
+@media (min-width: 1181px) {
+  .records-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
